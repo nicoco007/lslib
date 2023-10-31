@@ -4,8 +4,9 @@ using System.IO;
 using LSLib.LS.Enums;
 using Alphaleonis.Win32.Filesystem;
 using Path = Alphaleonis.Win32.Filesystem.Path;
-using Directory = Alphaleonis.Win32.Filesystem.Directory;
+using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
 using File = Alphaleonis.Win32.Filesystem.File;
+using FileInfo = Alphaleonis.Win32.Filesystem.FileInfo;
 
 namespace LSLib.LS
 {
@@ -232,9 +233,9 @@ namespace LSLib.LS
             }
         }
 
-        private bool IsA(string path, ResourceFormat format)
+        private bool IsA(FileInfo fileInfo, ResourceFormat format)
         {
-            var extension = Path.GetExtension(path).ToLower();
+            var extension = fileInfo.Extension.ToLowerInvariant();
             switch (format)
             {
                 case ResourceFormat.LSX: return extension == ".lsx";
@@ -245,25 +246,17 @@ namespace LSLib.LS
             }
         }
 
-        private void EnumerateFiles(List<string> paths, string rootPath, string currentPath, ResourceFormat format)
+        private void EnumerateFiles(List<string> paths, string rootPath, ResourceFormat format)
         {
-            foreach (string filePath in Directory.GetFiles(currentPath))
-            {
-                if (IsA(filePath, format))
-                {
-                    var relativePath = filePath.Substring(rootPath.Length);
-                    if (relativePath[0] == '/' || relativePath[0] == '\\')
-                    {
-                        relativePath = relativePath.Substring(1);
-                    }
+            DirectoryInfo directoryInfo = new DirectoryInfo(rootPath);
 
+            foreach (FileInfo fileInfo in directoryInfo.EnumerateFiles(DirectoryEnumerationOptions.Recursive))
+            {
+                if (IsA(fileInfo, format) && fileInfo.Length > 0)
+                {
+                    string relativePath = Path.GetRelativePath(rootPath, fileInfo.FullName);
                     paths.Add(relativePath);
                 }
-            }
-
-            foreach (string directoryPath in Directory.GetDirectories(currentPath))
-            {
-                EnumerateFiles(paths, rootPath, directoryPath, format);
             }
         }
 
@@ -272,14 +265,14 @@ namespace LSLib.LS
         {
             this.progressUpdate("Enumerating files ...", 0, 1);
             var paths = new List<string>();
-            EnumerateFiles(paths, inputDir, inputDir, inputFormat);
+            EnumerateFiles(paths, inputDir, inputFormat);
 
             this.progressUpdate("Converting resources ...", 0, 1);
             for (var i = 0; i < paths.Count; i++)
             {
                 var path = paths[i];
                 var inPath = inputDir + "/" + path;
-                var outPath = outputDir + "/" + Path.ChangeExtension(path, outputFormat.ToString().ToLower());
+                var outPath = outputDir + "/" + Path.ChangeExtension(path, outputFormat.ToString().ToLowerInvariant());
 
                 FileManager.TryToCreateDirectory(outPath);
 
