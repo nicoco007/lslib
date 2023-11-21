@@ -21,6 +21,11 @@ public class D3Constant32f : AnimationCurveData
         return [0.0f];
     }
 
+    public override void ScaleKnots(float factor)
+    {
+        // no-op
+    }
+
     public override List<Vector3> GetPoints()
     {
         return [new Vector3(Controls[0], Controls[1], Controls[2])];

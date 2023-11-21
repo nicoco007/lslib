@@ -31,6 +31,12 @@ public class D3I1K16uC16u : AnimationCurveData
         return knots;
     }
 
+    public override void ScaleKnots(float factor)
+    {
+        float scale = ConvertOneOverKnotScaleTrunc(OneOverKnotScaleTrunc);
+        OneOverKnotScaleTrunc = ConvertOneOverKnotScale(scale / factor);
+    }
+
     public override List<Vector3> GetPoints()
     {
         var numKnots = NumKnots();

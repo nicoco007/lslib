@@ -30,6 +30,14 @@ public class D3I1K32fC32f : AnimationCurveData
         return knots;
     }
 
+    public override void ScaleKnots(float factor)
+    {
+        for (int i = 0; i < KnotsControls.Count; i++)
+        {
+            KnotsControls[i] = factor * KnotsControls[i];
+        }
+    }
+
     public override List<Vector3> GetPoints()
     {
         var numKnots = NumKnots();

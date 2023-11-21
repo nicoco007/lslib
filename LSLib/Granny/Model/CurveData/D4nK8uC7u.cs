@@ -41,6 +41,11 @@ public class D4nK8uC7u : AnimationCurveData
         return knots;
     }
 
+    public override void ScaleKnots(float factor)
+    {
+        OneOverKnotScale /= factor;
+    }
+
     private Quaternion QuatFromControl(Byte a, Byte b, Byte c, float[] scales, float[] offsets)
     {
         // Control data format:

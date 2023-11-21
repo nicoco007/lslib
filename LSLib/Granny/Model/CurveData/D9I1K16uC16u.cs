@@ -29,6 +29,12 @@ public class D9I1K16uC16u : AnimationCurveData
         return knots;
     }
 
+    public override void ScaleKnots(float factor)
+    {
+        float scale = ConvertOneOverKnotScaleTrunc(OneOverKnotScaleTrunc);
+        OneOverKnotScaleTrunc = ConvertOneOverKnotScale(scale / factor);
+    }
+
     public override List<Quaternion> GetQuaternions()
     {
         throw new InvalidOperationException("D9I1K16uC16u is not a rotation curve!");

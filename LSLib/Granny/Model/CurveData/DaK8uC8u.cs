@@ -35,6 +35,12 @@ public class DaK8uC8u : AnimationCurveData
         return knots;
     }
 
+    public override void ScaleKnots(float factor)
+    {
+        float scale = ConvertOneOverKnotScaleTrunc(OneOverKnotScaleTrunc);
+        OneOverKnotScaleTrunc = ConvertOneOverKnotScale(scale / factor);
+    }
+
     public override List<Matrix3> GetMatrices()
     {
         Debug.Assert(Components() == 9);

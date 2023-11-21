@@ -21,6 +21,11 @@ public class D4Constant32f : AnimationCurveData
         return [0.0f];
     }
 
+    public override void ScaleKnots(float factor)
+    {
+        // no-op
+    }
+
     // TODO: GetMatrices
     public override List<Quaternion> GetQuaternions()
     {

@@ -206,6 +206,14 @@ public abstract class AnimationCurveData
         return f[0];
     }
 
+    protected UInt16 ConvertOneOverKnotScale(float oneOverKnotScale)
+    {
+        float[] f = [oneOverKnotScale];
+        UInt32[] i = new UInt32[1];
+        Buffer.BlockCopy(f, 0, i, 0, i.Length * 4);
+        return (UInt16)(i[0] >> 16);
+    }
+
     public float Duration()
     {
         return GetKnots()[NumKnots() - 1];
@@ -213,6 +221,7 @@ public abstract class AnimationCurveData
 
     public abstract int NumKnots();
     public abstract List<float> GetKnots();
+    public abstract void ScaleKnots(float factor);
 
     public virtual List<Vector3> GetPoints()
     {
