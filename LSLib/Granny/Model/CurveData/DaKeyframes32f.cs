@@ -40,6 +40,12 @@ namespace LSLib.Granny.Model.CurveData
             return knots;
         }
 
+        public override void ScaleKnots(float factor)
+        {
+            // TODO: figure out what to do here
+            throw new NotImplementedException();
+        }
+
         public void SetKnots(List<float> knots)
         {
             throw new NotSupportedException("Knots are fixed for DaKeyframes32f curves");

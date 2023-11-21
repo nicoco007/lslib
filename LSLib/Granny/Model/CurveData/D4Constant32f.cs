@@ -23,6 +23,11 @@ namespace LSLib.Granny.Model.CurveData
             return new List<float>() { 0.0f };
         }
 
+        public override void ScaleKnots(float factor)
+        {
+            // no-op
+        }
+
         // TODO: GetMatrices
         public override List<Quaternion> GetQuaternions()
         {

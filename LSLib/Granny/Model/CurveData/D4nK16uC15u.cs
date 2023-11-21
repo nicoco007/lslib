@@ -44,6 +44,11 @@ namespace LSLib.Granny.Model.CurveData
             return knots;
         }
 
+        public override void ScaleKnots(float factor)
+        {
+            OneOverKnotScale /= factor;
+        }
+
         private Quaternion QuatFromControl(UInt16 a, UInt16 b, UInt16 c, float[] scales, float[] offsets)
         {
             // Control data format:

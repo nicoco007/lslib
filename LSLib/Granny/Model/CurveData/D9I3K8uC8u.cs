@@ -33,6 +33,12 @@ namespace LSLib.Granny.Model.CurveData
             return knots;
         }
 
+        public override void ScaleKnots(float factor)
+        {
+            float scale = ConvertOneOverKnotScaleTrunc(OneOverKnotScaleTrunc);
+            OneOverKnotScaleTrunc = ConvertOneOverKnotScale(scale / factor);
+        }
+
         public override List<Quaternion> GetQuaternions()
         {
             throw new InvalidOperationException("D9I3K8uC8u is not a rotation curve!");

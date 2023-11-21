@@ -24,6 +24,11 @@ namespace LSLib.Granny.Model.CurveData
             return new List<float>() { 0.0f };
         }
 
+        public override void ScaleKnots(float factor)
+        {
+            // no-op
+        }
+
         public override List<Matrix3> GetMatrices()
         {
             Debug.Assert(Controls.Count == 9);

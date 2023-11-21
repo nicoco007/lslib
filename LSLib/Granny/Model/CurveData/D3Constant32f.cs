@@ -23,6 +23,11 @@ namespace LSLib.Granny.Model.CurveData
             return new List<float>() { 0.0f };
         }
 
+        public override void ScaleKnots(float factor)
+        {
+            // no-op
+        }
+
         public override List<Vector3> GetPoints()
         {
             return new List<Vector3>() { new Vector3(Controls[0], Controls[1], Controls[2]) };

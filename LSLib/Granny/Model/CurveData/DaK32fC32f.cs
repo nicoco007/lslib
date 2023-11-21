@@ -43,6 +43,14 @@ namespace LSLib.Granny.Model.CurveData
             return knots;
         }
 
+        public override void ScaleKnots(float factor)
+        {
+            for (int i = 0; i < Knots.Count; i++)
+            {
+                Knots[i] *= factor;
+            }
+        }
+
         public void SetKnots(List<float> knots)
         {
             Knots = new List<float>(knots);
