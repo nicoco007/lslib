@@ -738,7 +738,7 @@ public class ArrayIndicesReference : ArrayReference
             {
                 Items.Add(gr2.ReadReference());
 #if DEBUG_GR2_SERIALIZATION
-                Debug.WriteLine(String.Format("        {0:X8}", r.Offset));
+                Debug.WriteLine(String.Format("        {0:X8}", Offset));
 #endif
             }
             gr2.Stream.Seek(originalPos, SeekOrigin.Begin);
