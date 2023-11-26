@@ -797,7 +797,7 @@ namespace LSLib.Granny.GR2
                 {
                     Items.Add(gr2.ReadReference());
 #if DEBUG_GR2_SERIALIZATION
-                    System.Console.WriteLine(String.Format("        {0:X8}", r.Offset));
+                    System.Console.WriteLine(String.Format("        {0:X8}", Offset));
 #endif
                 }
                 gr2.Stream.Seek(originalPos, SeekOrigin.Begin);
