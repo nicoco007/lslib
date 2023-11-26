@@ -34,6 +34,11 @@ namespace LSLib.Granny.Model.CurveData
             return KnotsControls.Count / 4;
         }
 
+        public override void Translate(Vector3 vector)
+        {
+            throw new InvalidOperationException();
+        }
+
         public override List<float> GetKnots()
         {
             var numKnots = NumKnots();

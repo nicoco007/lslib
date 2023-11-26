@@ -32,6 +32,13 @@ namespace LSLib.Granny.Model.CurveData
             return knots;
         }
 
+        public override void Translate(Vector3 vector)
+        {
+            ControlOffsets[0] += vector.X;
+            ControlOffsets[1] += vector.Y;
+            ControlOffsets[2] += vector.Z;
+        }
+
         public override void ScaleKnots(float factor)
         {
             for (int i = 0; i < KnotsControls.Count; i++)

@@ -225,6 +225,7 @@ namespace LSLib.Granny.Model.CurveData
 
         public abstract int NumKnots();
         public abstract List<float> GetKnots();
+        public abstract void Translate(Vector3 vector);
         public abstract void ScaleKnots(float factor);
 
         public virtual List<Vector3> GetPoints()
