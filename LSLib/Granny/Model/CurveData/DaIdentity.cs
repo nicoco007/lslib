@@ -19,6 +19,11 @@ public class DaIdentity : AnimationCurveData
         return [0.0f];
     }
 
+    public override void Translate(Vector3 vector)
+    {
+        throw new InvalidOperationException();
+    }
+
     public override void ScaleKnots(float factor)
     {
         // no-op

@@ -21,6 +21,13 @@ public class D3Constant32f : AnimationCurveData
         return [0.0f];
     }
 
+    public override void Translate(Vector3 vector)
+    {
+        Controls[0] += vector.X;
+        Controls[1] += vector.Y;
+        Controls[2] += vector.Z;
+    }
+
     public override void ScaleKnots(float factor)
     {
         // no-op

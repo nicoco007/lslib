@@ -32,6 +32,11 @@ public class D4nK16uC15u : AnimationCurveData
         return KnotsControls.Count / 4;
     }
 
+    public override void Translate(Vector3 vector)
+    {
+        throw new InvalidOperationException();
+    }
+
     public override List<float> GetKnots()
     {
         var numKnots = NumKnots();

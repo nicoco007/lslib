@@ -40,6 +40,20 @@ public class DaK32fC32f : AnimationCurveData
         return knots;
     }
 
+    public override void Translate(Vector3 vector)
+    {
+        if (CurveType() != ExportType.Position)
+            throw new InvalidOperationException("DaK32fC32f: This curve is not a position curve!");
+
+        var numKnots = NumKnots();
+        for (var i = 0; i < numKnots; i++)
+        {
+            Controls[i * 3 + 0] += vector.X;
+            Controls[i * 3 + 1] += vector.Y;
+            Controls[i * 3 + 2] += vector.Z;
+        }
+    }
+
     public override void ScaleKnots(float factor)
     {
         for (int i = 0; i < Knots.Count; i++)
