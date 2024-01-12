@@ -54,6 +54,20 @@ namespace LSLib.Granny.Model.CurveData
             }
         }
 
+        public override void Scale(Vector3 vector)
+        {
+            if (CurveType() != ExportType.Position)
+                throw new InvalidOperationException("DaK32fC32f: This curve is not a position curve!");
+
+            var numKnots = NumKnots();
+            for (var i = 0; i < numKnots; i++)
+            {
+                Controls[i * 3 + 0] *= vector.X;
+                Controls[i * 3 + 1] *= vector.Y;
+                Controls[i * 3 + 2] *= vector.Z;
+            }
+        }
+
         public override void ScaleKnots(float factor)
         {
             // TODO: figure out what to do here

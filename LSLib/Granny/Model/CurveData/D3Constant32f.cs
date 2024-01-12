@@ -30,6 +30,13 @@ namespace LSLib.Granny.Model.CurveData
             Controls[2] += vector.Z;
         }
 
+        public override void Scale(Vector3 vector)
+        {
+            Controls[0] *= vector.X;
+            Controls[1] *= vector.Y;
+            Controls[2] *= vector.Z;
+        }
+
         public override void ScaleKnots(float factor)
         {
             // no-op

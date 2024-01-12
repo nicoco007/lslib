@@ -36,6 +36,11 @@ namespace LSLib.Granny.Model.CurveData
             throw new InvalidOperationException();
         }
 
+        public override void Scale(Vector3 vector)
+        {
+            throw new InvalidOperationException();
+        }
+
         public override void ScaleKnots(float factor)
         {
             float scale = ConvertOneOverKnotScaleTrunc(OneOverKnotScaleTrunc);
