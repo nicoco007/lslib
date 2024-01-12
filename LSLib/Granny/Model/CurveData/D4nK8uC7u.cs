@@ -36,6 +36,11 @@ public class D4nK8uC7u : AnimationCurveData
         throw new InvalidOperationException();
     }
 
+    public override void Scale(Vector3 vector)
+    {
+        throw new InvalidOperationException();
+    }
+
     public override List<float> GetKnots()
     {
         var numKnots = NumKnots();

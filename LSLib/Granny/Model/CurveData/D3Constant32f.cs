@@ -28,6 +28,13 @@ public class D3Constant32f : AnimationCurveData
         Controls[2] += vector.Z;
     }
 
+    public override void Scale(Vector3 vector)
+    {
+        Controls[0] *= vector.X;
+        Controls[1] *= vector.Y;
+        Controls[2] *= vector.Z;
+    }
+
     public override void ScaleKnots(float factor)
     {
         // no-op

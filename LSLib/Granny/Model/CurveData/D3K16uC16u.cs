@@ -38,6 +38,17 @@ public class D3K16uC16u : AnimationCurveData
         ControlOffsets[2] += vector.Z;
     }
 
+    public override void Scale(Vector3 vector)
+    {
+        ControlOffsets[0] *= vector.X;
+        ControlOffsets[1] *= vector.Y;
+        ControlOffsets[2] *= vector.Z;
+
+        ControlScales[0] *= vector.X;
+        ControlScales[1] *= vector.Y;
+        ControlScales[2] *= vector.Z;
+    }
+
     public override void ScaleKnots(float factor)
     {
         float scale = ConvertOneOverKnotScaleTrunc(OneOverKnotScaleTrunc);

@@ -27,6 +27,11 @@ public class DaConstant32f : AnimationCurveData
         throw new InvalidOperationException();
     }
 
+    public override void Scale(Vector3 vector)
+    {
+        throw new InvalidOperationException();
+    }
+
     public override void ScaleKnots(float factor)
     {
         // no-op

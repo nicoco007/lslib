@@ -23,9 +23,12 @@ public class D4Constant32f : AnimationCurveData
 
     public override void Translate(Vector3 vector)
     {
-        Controls[0] += vector.X;
-        Controls[1] += vector.Y;
-        Controls[2] += vector.Z;
+        throw new InvalidOperationException();
+    }
+
+    public override void Scale(Vector3 vector)
+    {
+        throw new InvalidOperationException();
     }
 
     public override void ScaleKnots(float factor)
