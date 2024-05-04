@@ -279,6 +279,7 @@ namespace ConverterApp
             settings.FlipUVs = flipUVs.Checked;
             settings.BuildDummySkeleton = buildDummySkeleton.Checked;
             settings.DeduplicateUVs = filterUVs.Checked;
+            settings.DeduplicateVertices = filterVertices.Checked;
             settings.ApplyBasisTransforms = applyBasisTransforms.Checked;
             settings.FlipMesh = flipMeshes.Checked;
             settings.FlipSkeleton = flipSkeletons.Checked;
