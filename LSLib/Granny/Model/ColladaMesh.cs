@@ -532,59 +532,101 @@ public class ColladaMesh
         if (UVInputIndices.Count > 0 || ColorInputIndices.Count > 0
             || NormalsInputIndex != -1 || TangentsInputIndex != -1 || BinormalsInputIndex != -1)
         {
-            var outVertexIndices = new Dictionary<int[], int>(new VertexIndexComparer());
-            ConsolidatedIndices = new List<int>(TriangleCount * 3);
-            ConsolidatedVertices = new List<Vertex>(Vertices.Count);
-            OriginalToConsolidatedVertexIndexMap = [];
-            for (var vert = 0; vert < TriangleCount * 3; vert++)
+            if (Options.DeduplicateVertices)
             {
-                var index = new int[InputOffsetCount];
-                for (var i = 0; i < InputOffsetCount; i++)
+                var outVertexIndices = new Dictionary<int[], int>(new VertexIndexComparer());
+                ConsolidatedIndices = new List<int>(TriangleCount * 3);
+                ConsolidatedVertices = new List<Vertex>(Vertices.Count);
+                OriginalToConsolidatedVertexIndexMap = [];
+                for (var vert = 0; vert < TriangleCount * 3; vert++)
                 {
-                    index[i] = Indices[vert * InputOffsetCount + i];
+                    var index = new int[InputOffsetCount];
+                    for (var i = 0; i < InputOffsetCount; i++)
+                    {
+                        index[i] = Indices[vert * InputOffsetCount + i];
+                    }
+
+                    if (!outVertexIndices.TryGetValue(index, out int consolidatedIndex))
+                    {
+                        var vertexIndex = index[VertexInputIndex];
+                        consolidatedIndex = ConsolidatedVertices.Count;
+                        Vertex vertex = Vertices[vertexIndex].Clone();
+                        if (NormalsInputIndex != -1)
+                        {
+                            vertex.Normal = Normals[index[NormalsInputIndex]];
+                        }
+                        if (TangentsInputIndex != -1)
+                        {
+                            vertex.Tangent = Tangents[index[TangentsInputIndex]];
+                        }
+                        if (BinormalsInputIndex != -1)
+                        {
+                            vertex.Binormal = Binormals[index[BinormalsInputIndex]];
+                        }
+                        for (int uv = 0; uv < UVInputIndices.Count; uv++)
+                        {
+                            vertex.SetUV(uv, UVs[uv][index[UVInputIndices[uv]]]);
+                        }
+                        for (int color = 0; color < ColorInputIndices.Count; color++)
+                        {
+                            vertex.SetColor(color, Colors[color][index[ColorInputIndices[color]]]);
+                        }
+                        outVertexIndices.Add(index, consolidatedIndex);
+                        ConsolidatedVertices.Add(vertex);
+
+                        if (!OriginalToConsolidatedVertexIndexMap.TryGetValue(vertexIndex, out List<int> mappedIndices))
+                        {
+                            mappedIndices = [];
+                            OriginalToConsolidatedVertexIndexMap.Add(vertexIndex, mappedIndices);
+                        }
+
+                        mappedIndices.Add(consolidatedIndex);
+                    }
+
+                    ConsolidatedIndices.Add(consolidatedIndex);
                 }
 
-                if (!outVertexIndices.TryGetValue(index, out int consolidatedIndex))
+                Utils.Info(String.Format("Merged {0} vertices into {1} output vertices", Vertices.Count, ConsolidatedVertices.Count));
+            }
+            else
+            {
+                ConsolidatedVertices = Vertices;
+
+                for (var vert = 0; vert < TriangleCount * 3; vert++)
                 {
-                    var vertexIndex = index[VertexInputIndex];
-                    consolidatedIndex = ConsolidatedVertices.Count;
-                    Vertex vertex = Vertices[vertexIndex].Clone();
+                    var vertexIndex = VertexIndex(vert);
+                    Vertex vertex = ConsolidatedVertices[vertexIndex];
+
                     if (NormalsInputIndex != -1)
                     {
-                        vertex.Normal = Normals[index[NormalsInputIndex]];
+                        vertex.Normal = Normals[Indices[vert * InputOffsetCount + NormalsInputIndex]];
                     }
                     if (TangentsInputIndex != -1)
                     {
-                        vertex.Tangent = Tangents[index[TangentsInputIndex]];
+                        vertex.Tangent = Tangents[Indices[vert * InputOffsetCount + TangentsInputIndex]];
                     }
                     if (BinormalsInputIndex != -1)
                     {
-                        vertex.Binormal = Binormals[index[BinormalsInputIndex]];
+                        vertex.Binormal = Binormals[Indices[vert * InputOffsetCount + BinormalsInputIndex]];
                     }
                     for (int uv = 0; uv < UVInputIndices.Count; uv++)
                     {
-                        vertex.SetUV(uv, UVs[uv][index[UVInputIndices[uv]]]);
+                        vertex.SetUV(uv, UVs[uv][Indices[vert * InputOffsetCount + UVInputIndices[uv]]]);
                     }
                     for (int color = 0; color < ColorInputIndices.Count; color++)
                     {
-                        vertex.SetColor(color, Colors[color][index[ColorInputIndices[color]]]);
+                        vertex.SetColor(color, Colors[color][Indices[vert * InputOffsetCount + ColorInputIndices[color]]]);
                     }
-                    outVertexIndices.Add(index, consolidatedIndex);
-                    ConsolidatedVertices.Add(vertex);
-
-                    if (!OriginalToConsolidatedVertexIndexMap.TryGetValue(vertexIndex, out List<int> mappedIndices))
-                    {
-                        mappedIndices = [];
-                        OriginalToConsolidatedVertexIndexMap.Add(vertexIndex, mappedIndices);
-                    }
-
-                    mappedIndices.Add(consolidatedIndex);
                 }
 
-                ConsolidatedIndices.Add(consolidatedIndex);
-            }
+                ConsolidatedIndices = new List<int>(TriangleCount * 3);
+                for (var vert = 0; vert < TriangleCount * 3; vert++)
+                    ConsolidatedIndices.Add(VertexIndex(vert));
 
-            Utils.Info(String.Format("Merged {0} vertices into {1} output vertices", Vertices.Count, ConsolidatedVertices.Count));
+                OriginalToConsolidatedVertexIndexMap = [];
+                for (var i = 0; i < Vertices.Count; i++)
+                    OriginalToConsolidatedVertexIndexMap.Add(i, [i]);
+            }
         }
         else
         {
