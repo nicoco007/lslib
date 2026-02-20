@@ -95,7 +95,7 @@ namespace ConverterApp
 
         public void ResourceError(string path, Exception e)
         {
-            MessageBox.Show($"Failed to convert resource {path}{Environment.NewLine}{Environment.NewLine}{e}", "Conversion Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            System.Diagnostics.Debug.WriteLine($"Failed to convert resource {path}{Environment.NewLine}{Environment.NewLine}{e}");
         }
 
         private void resourceBulkConvertBtn_Click(object sender, EventArgs e)
