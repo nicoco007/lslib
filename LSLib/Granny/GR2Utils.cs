@@ -86,25 +86,15 @@ public class GR2Utils
         exporter.Export();
     }
 
-    private static List<string> EnumerateFiles(string path, ExportFormat format)
-    {
-        if (!path.EndsWith(Path.DirectorySeparatorChar.ToString()))
-        {
-            path += Path.DirectorySeparatorChar;
-        }
-
-        return Directory.EnumerateFiles(path, $"*.{format.ToString().ToLower()}", SearchOption.AllDirectories).ToList();
-    }
-
     public void ConvertModels(string inputDirectoryPath, string outputDirectoryPath, Exporter exporter)
     {
         string outputExtension = exporter.Options.OutputFormat.ToString().ToLower();
 
         ProgressUpdate("Enumerating files ...", 0, 1);
-        List<string> inputFilePaths = EnumerateFiles(inputDirectoryPath, exporter.Options.InputFormat);
+        string[] inputFilePaths = Directory.GetFiles(inputDirectoryPath, $"*.{exporter.Options.InputFormat.ToString().ToLower()}", SearchOption.AllDirectories);
 
         ProgressUpdate("Converting resources ...", 0, 1);
-        for (var i = 0; i < inputFilePaths.Count; i++)
+        for (var i = 0; i < inputFilePaths.Length; i++)
         {
             string inputFilePath = inputFilePaths[i];
 
@@ -112,7 +102,7 @@ public class GR2Utils
 
             FileManager.TryToCreateDirectory(outputFilePath);
 
-            ProgressUpdate($"Converting: {inputFilePath}", i, inputFilePaths.Count);
+            ProgressUpdate($"Converting: {inputFilePath}", i, inputFilePaths.Length);
             try
             {
                 Root model = LoadModel(inputFilePath, exporter.Options);
